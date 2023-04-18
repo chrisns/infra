@@ -1,0 +1,23 @@
+nameSuffix: -down
+bases:
+  - ../base
+
+patchesJson6902:
+  - target:
+      kind: Ingress
+      name: paparazzogo
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/http/paths/0/path
+        value: /imageproxy/down
+
+  - target:
+      kind: Deployment
+      name: paparazzogo
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
+        value: external_down
+
+commonLabels:
+  camera: 'external-down'

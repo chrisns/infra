@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # - https://raw.githubusercontent.com/open-policy-agent/gatekeeper/release-3.3/deploy/gatekeeper.yaml
+  # - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+bases:
+  # - ble
+  # - https://github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.22.0
+  # - broadlink
+  # - cameras
+  # - ddns
+  # - etcd-backup
+  # - kiam
+  # - magichome
+  # - metrics
+  # - nest
+  # - rules_engine
+  # - harmony
+  # - solaredge
+  - sonos
+  # - velux
+  # - ingress-nginx
+  # - https://github.com/chrisns/k8update
+  - cert-manager
+  # - system-uprade-controller
+  # - ca
+  - ha
+  - zwave
+  - external-dns
+  - nfs
+  - metallb
+  - paparazzogo
+  # - reloader
+
+# secretGenerator: 
+#   - name: aws-iot-creds
+#     env: aws-iot-creds.secret.txt
+#     type: Opaque
+
+generatorOptions:
+  disableNameSuffixHash: true

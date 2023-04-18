@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ha-backup
+spec:
+  # activeDeadlineSeconds: 100
+  schedule: "35 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ha-backup
+              image: busybox
+              command: ["/bin/sh"]
+              args:
+                [
+                  "-c",
+                  "tar -cjf backup/$(date +%Y-%m-%d_%H-%M-%S_%Z).tgz /config"
+                ]
+              volumeMounts:
+                - name: pvc
+                  mountPath: /config
+                  readOnly: true
+                - mountPath: /backup
+                  name: backup
+          restartPolicy: OnFailure
+          volumes:
+            - name: pvc
+              persistentVolumeClaim:
+                claimName: homeassistant
+            - name: backup
+              persistentVolumeClaim:
+                claimName: ha-backup

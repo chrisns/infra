@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: ha.p.cns.me
+
+    # nginx.ingress.kubernetes.io/auth-tls-secret: ca/pair
+    # nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   more_set_headers "X-Forwarded-For $http_x_forwarded_for";
+
+spec:
+  # ingressClassName: nginx
+  tls:
+  - hosts:
+      - ha.p.cns.me
+    secretName: ha-https
+  rules:
+    - host: ha.p.cns.me
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: homeassistant
+              port: 
+                name: http

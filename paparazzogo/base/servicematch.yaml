@@ -1,0 +1,25 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: global-labels
+labels:
+fieldSpecs:
+  - path: spec/selector
+    create: true
+    version: v1
+    kind: Service
+# commonLabels:
+# paths:
+#   - path: metadata/labels
+#     create: true
+
+#   - path: spec/selector
+#     create: true
+#     version: v1
+#     kind: Service
+
+#   - path: spec/selector/matchLabels
+#     create: true
+#     kind: Deployment
+# labels:
+#   app: foo

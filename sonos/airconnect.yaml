@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sonos-airconnect
+  labels:
+    name: sonos-airconnect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: sonos-airconnect
+  template:
+    metadata:
+      labels:
+        name: sonos-airconnect
+    spec:
+      hostNetwork: true
+      containers:
+        - image: 1activegeek/airconnect
+          name: sonos-airconnect
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 0.3
+
+      restartPolicy: Always

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: https
+spec:
+  secretName: https
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - zwave-usa.p.cns.me
+    - zwave-eu.p.cns.me

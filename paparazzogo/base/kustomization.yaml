@@ -1,0 +1,65 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - ingress.yaml
+  - deployment.yaml
+  - service.yaml
+  - pod-disruption-budget.yaml
+# commonLabels:
+#   paths:
+#     - path: metadata/labels
+#       create: true
+
+#     - path: spec/selector
+#       create: true
+#       version: v1
+#       kind: Service
+
+#     - path: spec/selector/matchLabels
+#       create: true
+#       kind: Deployment
+#   labels:
+#     app: foo
+# transformers:
+#   - servicematch.yaml
+
+# commonLabels:
+#     fff: "true"
+
+# - path: spec/selector
+#   create: true
+#   version: v1
+#   kind: Service
+
+# - path: spec/selector/matchLabels
+#   create: true
+#   kind: Deployment
+
+# secretGenerator:
+#   - name: webrtc-config
+#     files:
+#       - config.json
+#   - name: webrtc
+#     env: env.txt
+# vars:
+# - name: MY_DEPLOYMENT_NAME
+#   objref:
+#     kind: Deployment
+#     name: restreamer
+# apiVersion: v1
+
+# replacements:
+# - from:
+#     value:
+#       - configmap:environment.data.region
+#       - configmap:environment.data.az
+#     join: ""
+#   to:
+#     target:
+#       kind: Deployment
+#     fieldrefs:
+#       - spec.template.spec.affinity.nodeAffinity.requiredDuringSchedulin

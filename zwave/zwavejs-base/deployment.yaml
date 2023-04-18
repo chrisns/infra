@@ -1,0 +1,83 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: zwave
+spec:
+  replicas: 1
+  strategy: 
+    type: Recreate
+  selector:
+    matchLabels:
+      name: zwave
+  template:
+    metadata:
+      labels:
+        name: zwave
+      # annotations:
+      #   iam.amazonaws.com/role: IoTZwave
+    spec:
+      priorityClassName: zwave-high-priority
+      containers:
+        - name: zwave
+          image: ghcr.io/zwave-js/zwave-js-ui:latest
+          # imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8091
+            - name: ws
+              containerPort: 3000
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1024Mi
+            requests:
+              cpu: "1"
+              memory: 768Mi
+          volumeMounts:
+            - mountPath: /dev/zwavestick
+              name: zwavestick
+            - mountPath: /usr/src/app/store
+              name: data
+            # - mountPath: /usr/src/app/store/settings.json
+            #   subPath: settings.json
+            #   name: config
+            #   readOnly: true
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health/zwave
+          #     port: http
+          #     httpHeaders:
+          #       - name: Accept
+          #         value: text/plain
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 3
+          #   failureThreshold: 10
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+          # env:
+          #   - name: DEVICE
+          #     value: /dev/ttyUSB1
+          #   - name: DEBUG
+          #     value: ""
+          envFrom:
+            - secretRef:
+                name: zwave
+      restartPolicy: Always
+      dnsConfig:
+        searches:
+          - svc.cluster.local
+          - zwave.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: edns0
+          - name: ndots
+            value: "1"
+      volumes:
+        # - name: zwavestick
+        #   hostPath:
+        #     path: /dev/ttyACM0
+        - name: data
+          persistentVolumeClaim:
+            claimName: zwave

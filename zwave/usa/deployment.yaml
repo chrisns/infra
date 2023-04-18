@@ -1,0 +1,22 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: zwave
+spec:
+  template:
+    spec:
+      # containers:
+        # - name: zwave
+        #   env:
+        #     - name: BUCKET_KEY
+        #       value: pink_usa
+      nodeSelector:
+        kubernetes.io/hostname: k3s.cns.me
+      volumes:
+        - name: config
+          secret:
+            secretName: zwave2mqtt-usa
+        - name: zwavestick
+          hostPath:
+            path: /dev/serial/by-id/usb-Silicon_Labs_Zooz_ZST10_700_Z-Wave_Stick_24f3b72fa621ec11ac1bb9942c86906c-if00-port0
+            type: CharDevice

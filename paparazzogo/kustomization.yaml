@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+  - name: paparazzogo
+    env: .env
+
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+resources:
+  - external_driveway
+  # - external_back
+  - external_front
+  - external_down
+  - external_garden
+  - external_porch
+  - namespace.yaml
+
+namespace: paparazzogo

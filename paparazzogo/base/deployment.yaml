@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: paparazzogo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: paparazzogo
+  template:
+    metadata:
+      labels:
+        name: paparazzogo
+    spec:
+      # affinity:
+      #   podAntiAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 100
+      #       podAffinityTerm:
+      #         labelSelector:
+      #           matchExpressions:
+      #           - key: name
+      #             operator: In
+      #             values:
+      #             - paparazzogo
+      #         topologyKey: topology.kubernetes.io/zone
+      containers:
+        - image: ghcr.io/chrisns/single-paparazzogo:latest
+          name: paparazzogo
+          resources:
+            limits:
+              memory: 64Mi
+              cpu: '0.2'
+            requests:
+              memory: 32Mi
+              cpu: '0.1'
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: URL
+              valueFrom:
+                secretKeyRef:
+                  name: paparazzogo
+                  key: replaced
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+      terminationGracePeriodSeconds: 30
+      restartPolicy: Always

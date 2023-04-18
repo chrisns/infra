@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-nginx-controller
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: controller
+          args:
+            - /nginx-ingress-controller
+            - --election-id=ingress-controller-leader
+            - --ingress-class=nginx
+            - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+            - --validating-webhook=:8443
+            - --default-ssl-certificate=$(POD_NAMESPACE)/p-cns-me-wildcard-cert
+            - --validating-webhook-certificate=/usr/local/certificates/cert
+            - --validating-webhook-key=/usr/local/certificates/key

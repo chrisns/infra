@@ -1,0 +1,75 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frigate
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: frigate
+  template:
+    metadata:
+      labels:
+        name: frigate
+    spec:
+      # securityContext:
+      #   runAsUser: 1000
+      #   runAsGroup: 3000
+      #   fsGroup: 2000
+
+      volumes:
+        - name: config
+          configMap:
+            name: frigate
+        # - name: data
+        #   persistentVolumeClaim:
+        #     claimName: frigate
+        # - name: dshm
+        #   emptyDir:
+        #     medium: Memory
+        #     sizeLimit: 1Gi
+      tolerations:
+        - key: "tpu"
+          operator: "Exists"
+          effect: "NoExecute"
+      nodeSelector:
+        kubernetes.io/hostname: vm3.cns.me
+
+      containers:
+        - image: blakeblackshear/frigate:0.11.0-rc3
+          name: frigate
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+          resources:
+            limits:
+              memory: 15524Mi
+              cpu: 6
+            requests:
+              memory: 512Mi
+              cpu: '0.8'
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+            - name: rtmp
+              containerPort: 1935
+              protocol: TCP
+          # envFrom:
+          #   - secretRef:
+          #       name: secrets
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: PLUS_API_KEY
+              value: "6b104607-4cf5-45af-94c0-1bd07d1da155:a7c2a917b63aad105893dd563733d4da19354c4f"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            # - mountPath: /data
+            #   name: data
+            # - name: dshm
+            #   mountPath: /dev/shm
+      restartPolicy: Always

@@ -1,0 +1,25 @@
+nameSuffix: -usa
+bases:
+  - ../zwavejs-base
+
+secretGenerator:
+  - name: zwave2mqtt
+    files:
+      - settings.json
+  # - name: auth
+  #   files:
+  #     - auth
+
+patches:
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+
+commonLabels:
+  zwave: usa
+
+resources:
+  - ingress.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true

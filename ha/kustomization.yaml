@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - service.yaml
+  - ingress.yaml
+  # - ingress-remote.yaml
+  - deployment.yaml
+  - pvc.yaml
+  - backup-cronjob.yaml
+  - backup-pvc.yaml
+  - https-cert.yaml
+
+secretGenerator:
+  # - name: aws-certs
+  #   files:
+  #     - config/5ba2c763c3-public.pem.key
+  #     - config/5ba2c763c3-private.pem.key
+  #     - config/5ba2c763c3-certificate.pem.crt
+  #     - config/AmazonRootCA1.pem
+  - name: secrets
+    env: env.txt
+
+# configMapGenerator:
+#   - name: config
+#     files:
+#       - config/automations.yaml
+#       - config/camera.yaml
+#       - config/configuration.yaml
+#       - config/groups.yaml
+#       - config/ios.yaml
+#       - config/scripts.yaml
+#       - config/secrets.yaml
+#       - config/ui-lovelace.yaml
+
+namespace: homeassistant

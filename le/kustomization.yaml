@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# bases:
+#   - github.com/kubernetes/ingress-nginx.git/deploy/static/provider/baremetal?ref=controller-v1.2.1
+resources:
+  - le-issuer.yaml
+  - le-cloudflare-secret.yaml
+  - le-wildcard-certificate.yaml
+  # - ingress-class.yaml
+  # - service.yaml
+
+# patches:
+#   - path: deployment.yaml
+#     target:
+#       kind: Deployment
+#   - path: ingress-class.yaml
+#     target:
+#       kind: IngressClass
+      # name: ingress-nginx-controller
+      # group: apps
+      # version: v1
+  # - path: service-patch.yaml
+  #   target:
+  #     kind: Service
+  #     name: ingress-nginx-controller
+
+namespace: cert-manager

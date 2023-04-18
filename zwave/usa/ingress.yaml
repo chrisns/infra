@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zwave
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: zwave-usa.p.cns.me
+spec:
+  rules:
+    - host: zwave-usa.p.cns.me
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: zwave-usa
+              port: 
+                name: http
+  tls:
+  - hosts:
+    - zwave-usa.p.cns.me
+    secretName: https

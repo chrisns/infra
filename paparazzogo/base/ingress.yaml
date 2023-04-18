@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paparazzogo
+spec:
+  rules:
+    - host: ha.p.cns.me
+      http:
+        paths:
+          - path: /imageproxy/replaced
+            pathType: Prefix
+            backend:
+              service:
+                name: paparazzogo
+                port:
+                  name: http
+          - path: /service_worker.js
+            pathType: Prefix
+            backend:
+              service:
+                name: paparazzogo
+                port:
+                  name: http

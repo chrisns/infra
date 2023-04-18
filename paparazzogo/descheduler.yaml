@@ -1,0 +1,11 @@
+apiVersion: "descheduler/v1alpha1"
+kind: "DeschedulerPolicy"
+strategies:
+  "PodLifeTime":
+    enabled: true
+    params:
+      podLifeTime:
+        maxPodLifeTimeSeconds: 3600
+      namespaces:
+        include:
+          - "paparazzogo"
