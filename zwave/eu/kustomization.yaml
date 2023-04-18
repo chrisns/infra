@@ -2,10 +2,10 @@ nameSuffix: -eu
 bases:
   - ../zwavejs-base
 
-secretGenerator:
-  - name: zwave2mqtt
-    files:
-      - settings.json
+# secretGenerator:
+#   - name: zwave2mqtt
+#     files:
+#       - settings.json
   # - name: auth
   #   files:
   #     - auth

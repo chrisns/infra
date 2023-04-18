@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  - cert.yaml
+  - airconnect.yaml
 
-namespace: customcerts
+namespace: sonos
