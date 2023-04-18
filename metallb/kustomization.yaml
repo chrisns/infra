@@ -4,12 +4,14 @@ kind: Kustomization
 namespace: metallb-system
 
 resources:
-  - github.com/metallb/metallb//manifests?ref=v0.13.9
+- github.com/metallb/metallb/config/native?ref=v0.13.9
+- ipaddresspool.yaml
+- l2advertisement.yaml
 
-configMapGenerator:
-- name: config
-  files:
-    - config=config.yaml
+# configMapGenerator:
+# - name: config
+#   files:
+#     - config=config.yaml
 
 secretGenerator:
 - name: memberlist
