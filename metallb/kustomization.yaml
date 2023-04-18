@@ -8,15 +8,5 @@ resources:
 - ipaddresspool.yaml
 - l2advertisement.yaml
 
-# configMapGenerator:
-# - name: config
-#   files:
-#     - config=config.yaml
-
-secretGenerator:
-- name: memberlist
-  files:
-    - secretkey
-
 generatorOptions:
  disableNameSuffixHash: true
