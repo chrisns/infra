@@ -19,7 +19,7 @@ bases:
   # - rules_engine
   # - harmony
   # - solaredge
-  - sonos
+  # - sonos
   # - velux
   # - ingress-nginx
   # - https://github.com/chrisns/k8update
@@ -29,7 +29,7 @@ bases:
   - ha
   - zwave
   - external-dns
-  - nfs
+  # - nfs
   - metallb
   - paparazzogo
   # - reloader
