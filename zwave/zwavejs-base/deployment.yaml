@@ -60,9 +60,9 @@ spec:
           #     value: /dev/ttyUSB1
           #   - name: DEBUG
           #     value: ""
-          envFrom:
-            - secretRef:
-                name: zwave
+          # envFrom:
+          #   - secretRef:
+          #       name: zwave
       restartPolicy: Always
       dnsConfig:
         searches:

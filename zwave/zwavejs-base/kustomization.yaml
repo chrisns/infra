@@ -6,9 +6,9 @@ resources:
   - deployment.yaml
   - service.yaml
 
-secretGenerator:
-  - name: zwave
-    env: env.txt
+# secretGenerator:
+#   - name: zwave
+#     env: env.txt
 
     # namespace: zwave
     # type: Opaque
