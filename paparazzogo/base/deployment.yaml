@@ -27,7 +27,7 @@ spec:
       #             - paparazzogo
       #         topologyKey: topology.kubernetes.io/zone
       containers:
-        - image: ghcr.io/chrisns/single-paparazzogo:1.0.495k
+        - image: ghcr.io/chrisns/single-paparazzogo:1.0.495
           name: paparazzogo
           resources:
             limits:
