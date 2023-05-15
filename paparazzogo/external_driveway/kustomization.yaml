@@ -1,23 +1,27 @@
 nameSuffix: -driveway
-bases:
-  - ../base
+resources:
+- ../base
 
-patchesJson6902:
-  - target:
-      kind: Ingress
-      name: paparazzogo
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/http/paths/0/path
-        value: /imageproxy/driveway
 
-  - target:
-      kind: Deployment
-      name: paparazzogo
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
-        value: external_driveway
 
-commonLabels:
-  camera: 'external-driveway'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+labels:
+- includeSelectors: true
+  pairs:
+    camera: external-driveway
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/rules/0/http/paths/0/path
+      value: /imageproxy/driveway
+  target:
+    kind: Ingress
+    name: paparazzogo
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
+      value: external_driveway
+  target:
+    kind: Deployment
+    name: paparazzogo

@@ -1,7 +1,4 @@
 nameSuffix: -usa
-bases:
-  - ../zwavejs-base
-
 # secretGenerator:
 #   - name: zwave2mqtt
 #     files:
@@ -11,14 +8,15 @@ bases:
   #     - auth
 
 patches:
-  - pvc.yaml
-  - deployment.yaml
-  - service.yaml
+  - path: pvc.yaml
+  - path: deployment.yaml
+  - path: service.yaml
 
 commonLabels:
   zwave: usa
 
 resources:
+  - ../zwavejs-base
   - ingress.yaml
 
 generatorOptions:

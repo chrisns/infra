@@ -19,7 +19,7 @@ spec:
       priorityClassName: zwave-high-priority
       containers:
         - name: zwave
-          image: ghcr.io/zwave-js/zwave-js-ui:8.14.0
+          image: ghcr.io/zwave-js/zwave-js-ui:8.15.0
           # imagePullPolicy: IfNotPresent
           ports:
             - name: http

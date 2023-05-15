@@ -1,23 +1,27 @@
 nameSuffix: -porch
-bases:
-  - ../base
+resources:
+- ../base
 
-patchesJson6902:
-  - target:
-      kind: Ingress
-      name: paparazzogo
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/http/paths/0/path
-        value: /imageproxy/porch
 
-  - target:
-      kind: Deployment
-      name: paparazzogo
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
-        value: external_porch
 
-commonLabels:
-  camera: 'external-porch'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+labels:
+- includeSelectors: true
+  pairs:
+    camera: external-porch
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/rules/0/http/paths/0/path
+      value: /imageproxy/porch
+  target:
+    kind: Ingress
+    name: paparazzogo
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
+      value: external_porch
+  target:
+    kind: Deployment
+    name: paparazzogo

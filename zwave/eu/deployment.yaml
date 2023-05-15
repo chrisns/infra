@@ -11,8 +11,8 @@ spec:
         #   env:
         #     - name: BUCKET_KEY
         #       value: pink_eu
-      nodeSelector:
-        kubernetes.io/hostname: k3s.cns.me
+      # nodeSelector:
+      #   kubernetes.io/hostname: k3s.cns.me
       volumes:
         - name: config
           secret:

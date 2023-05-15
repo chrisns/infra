@@ -1,6 +1,7 @@
 nameSuffix: -eu
-bases:
+resources:
   - ../zwavejs-base
+  - ingress.yaml
 
 # secretGenerator:
 #   - name: zwave2mqtt
@@ -14,12 +15,10 @@ commonLabels:
   zwave: eu
 
 patches:
-  - pvc.yaml
-  - deployment.yaml
-  - service.yaml
+  - path: pvc.yaml
+  - path: deployment.yaml
+  - path: service.yaml
 
-resources:
-  - ingress.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
