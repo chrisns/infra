@@ -36,7 +36,7 @@ spec:
           - name: ndots
             value: "1"
       containers:
-        - image: ghcr.io/home-assistant/home-assistant:2023.5.3
+        - image: ghcr.io/home-assistant/home-assistant:2023.6.2
           name: homeassistant
           resources:
             limits:
