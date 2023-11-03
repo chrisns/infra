@@ -45,3 +45,4 @@ ingress-nginx/le-cloudflare-secret.yaml
 /ddns/env.txt.secret
 /frigate/env.txt
 /zwave/zwavejs-base/env.txt
+/devices-tls/env.txt
