@@ -14,13 +14,20 @@ metadata:
 spec:
   # ingressClassName: nginx
   tls:
-  - hosts:
-      - ha.p.cns.me
-    secretName: ha-https
+    - hosts:
+        - ha.p.cns.me
+      secretName: ha-https
   rules:
     - host: ha.p.cns.me
       http:
         paths:
+        - path: /service_worker.js
+          pathType: Exact
+          backend:
+            service:
+              name: empty
+              port:
+                name: http
         - path: /
           pathType: Prefix
           backend:
