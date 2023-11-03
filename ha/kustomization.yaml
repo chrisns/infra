@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - service.yaml
+  - PriorityClass.yaml
   - ingress.yaml
   # - ingress-remote.yaml
   - deployment.yaml
