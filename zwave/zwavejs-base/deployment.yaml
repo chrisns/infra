@@ -19,8 +19,8 @@ spec:
       priorityClassName: zwave-high-priority
       containers:
         - name: zwave
-          image: ghcr.io/zwave-js/zwave-js-ui:8.15.0
-          # imagePullPolicy: IfNotPresent
+          image: ghcr.io/zwave-js/zwave-js-ui:9.3.1
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8091
