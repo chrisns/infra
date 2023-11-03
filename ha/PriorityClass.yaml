@@ -1,0 +1,7 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: ha-high-priority
+value: 1000000
+globalDefault: false
+description: "super high priority for ha so that it will bump other things off the vm if it needs"
