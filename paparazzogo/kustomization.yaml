@@ -16,6 +16,8 @@ resources:
 - external_down
 - external_garden
 - external_porch
+- external_back
+- external_side
 - namespace.yaml
 
 namespace: paparazzogo

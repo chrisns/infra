@@ -14,10 +14,3 @@ spec:
                 name: paparazzogo
                 port:
                   name: http
-          - path: /service_worker.js
-            pathType: Prefix
-            backend:
-              service:
-                name: paparazzogo
-                port:
-                  name: http
