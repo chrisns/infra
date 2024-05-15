@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frigate
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: frigate.p.cns.me
+
+spec:
+  tls:
+    - hosts:
+        - frigate.p.cns.me
+      secretName: frigate-https
+
+  rules:
+    - host: frigate.p.cns.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frigate
+                port:
+                  name: http
