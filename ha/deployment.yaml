@@ -37,12 +37,12 @@ spec:
           - name: ndots
             value: "1"
       containers:
-        - image: ghcr.io/home-assistant/home-assistant:2023.11.0
+        - image: ghcr.io/home-assistant/home-assistant:2024.5.2
           imagePullPolicy: IfNotPresent
           name: homeassistant
           resources:
             limits:
-              memory: 4096Mi
+              memory: 12000Mi
               cpu: '20'
             requests:
               memory: 512Mi
@@ -50,6 +50,16 @@ spec:
           ports:
             - name: http
               containerPort: 8123
+              protocol: TCP
+            - name: coiot
+              containerPort: 5683
+              protocol: UDP
+            - name: sonos
+              containerPort: 1400
+              protocol: TCP
+            - name: sonos
+              containerPort: 1400
+              protocol: UDP
           envFrom:
             - secretRef:
                 name: secrets
