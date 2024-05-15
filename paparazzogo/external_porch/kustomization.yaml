@@ -14,7 +14,7 @@ patches:
 - patch: |-
     - op: replace
       path: /spec/rules/0/http/paths/0/path
-      value: /imageproxy/porch
+      value: /api/imageproxy/porch
   target:
     kind: Ingress
     name: paparazzogo

@@ -7,7 +7,7 @@ spec:
     - host: ha.p.cns.me
       http:
         paths:
-          - path: /imageproxy/replaced
+          - path: /api/imageproxy/replaced
             pathType: Prefix
             backend:
               service:
