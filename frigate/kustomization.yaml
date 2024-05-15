@@ -10,9 +10,9 @@ resources:
   # - pvc.yaml
   - https-cert.yaml
 
-# secretGenerator:
-  # - name: secrets
-  #   env: env.txt
+secretGenerator:
+  - name: secrets
+    env: env.txt
 
 configMapGenerator:
   - name: config

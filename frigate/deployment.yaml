@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frigate
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frigate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frigate
+    spec:
+      containers:
+        - name: frigate
+          image: ghcr.io/blakeblackshear/frigate:0.13.2
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          envFrom:
+            - secretRef:
+                name: secrets
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+            - name: rtmp
+              containerPort: 1935
+              protocol: TCP
+            - name: rtsp
+              containerPort: 8554
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            failureThreshold: 4
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            failureThreshold: 2
+          volumeMounts:
+            - mountPath: /dev/bus/usb
+              name: coral-dev
+            - mountPath: /dev/apex_0
+              name: coral-board
+
+            - mountPath: /config/config.yml
+              subPath: config.yml
+              name: configmap
+            - mountPath: /config
+              name: config
+            - mountPath: /data
+              name: data
+            - mountPath: /media
+              name: media
+            - name: dshm
+              mountPath: /dev/shm
+          resources:
+      volumes:
+        - name: configmap
+          configMap:
+            name: config
+        - name: coral-dev
+          hostPath:
+            path: /dev/bus/usb
+        - name: coral-board
+          hostPath:
+            path: /dev/apex_0
+        - name: config
+          emptyDir: {}
+        - name: data
+          emptyDir: {}
+        - name: media
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+      tolerations:
+        - key: think
+          operator: "Equal"
+          value: "true"
+          effect: "NoExecute"
+      nodeSelector:
+        kubernetes.io/hostname: think

@@ -1,0 +1,194 @@
+mqtt:
+  enabled: true
+  host: "{FRIGATE_MQTT_HOST}"
+  port: 8883
+  user: "{FRIGATE_MQTT_USER}"
+  password: "{FRIGATE_MQTT_PASSWORD}"
+  tls_ca_certs: /etc/ssl/certs/ca-certificates.crt
+
+detectors:
+  coral:
+    type: edgetpu
+    device: pci
+
+logger:
+  default: info
+  # logs:
+  #   frigate.event: debug
+
+
+birdseye:
+  enabled: false
+
+ffmpeg:
+  hwaccel_args: preset-vaapi
+  global_args: -hide_banner -loglevel warning -threads 2
+  input_args:
+    - -r
+    - 30 # << enter FPS here
+    - -stream_loop
+    - -1
+    - -f
+    - image2
+    - -avoid_negative_ts
+    - make_zero
+    - -fflags
+    - nobuffer
+    - -flags
+    - low_delay
+    - -strict
+    - experimental
+    - -fflags
+    - +genpts+discardcorrupt
+    - -use_wallclock_as_timestamps
+    - 1
+  output_args:
+    # Optional: output args for detect streams (default: shown below)
+    detect: -threads 2 -f rawvideo -pix_fmt yuv420p
+    # Optional: output args for record streams (default: shown below)
+    record: preset-record-generic
+    # Optional: output args for rtmp streams (default: shown below)
+    rtmp: preset-rtmp-generic
+  retry_interval: 10
+
+detect:
+  fps: 5
+  enabled: true
+  min_initialized: 2
+  max_disappeared: 25
+  stationary:
+    interval: 50
+    threshold: 50
+  annotation_offset: 0
+
+objects:
+  track:
+    - person
+    - bicycle
+    - car
+    - motorcycle
+    - bus
+    - car
+    - horse
+    - backpack
+
+motion:
+  threshold: 30
+  lightning_threshold: 0.8
+  contour_area: 10
+  frame_alpha: 0.01
+  frame_height: 100
+  improve_contrast: True
+
+record:
+  enabled: false
+  events:
+    retain:
+      default: 2
+
+snapshots:
+  enabled: True
+  retain:
+    default: 30
+
+rtmp:
+  enabled: False
+
+live:
+  stream_name: camera_name
+  height: 720
+  quality: 8
+
+go2rtc:
+  streams:
+    driveway: ffmpeg:driveway#video=h264
+
+cameras:
+  driveway:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-driveway.paparazzogo.svc.cluster.local
+          roles: &roles
+            - detect
+            - record
+    zones:
+      zone_driveway:
+        coordinates: 640,360,640,131,160,77,0,99,0,360
+
+  front:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-front.paparazzogo.svc.cluster.local
+          roles: *roles
+    zones:
+      zone_front_porch:
+        coordinates: 640,360,640,92,420,51,231,74,244,150,0,228,0,360
+  porch:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-porch.paparazzogo.svc.cluster.local
+          roles: *roles
+    zones:
+      zone_porch_outside:
+        coordinates: 79,378,227,256,252,61,0,165,0,211
+      zone_porch_inside:
+        coordinates: 352,640,0,640,0,333,234,182,252,24,352,0
+
+  down:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-down.paparazzogo.svc.cluster.local
+          roles: *roles
+
+    zones:
+      zone_down_porch:
+        coordinates: 829,767,528,944,194,333,458,225
+      zone_down_gate:
+        coordinates: 1830,538,1171,1080,615,1080,534,955,825,758,554,367,1171,21
+      zone_down_drive:
+        coordinates: 1083,158,537,361,440,216,183,344,36,0,871,0
+  garden:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-garden.paparazzogo.svc.cluster.local
+          roles: *roles
+
+    zones:
+      zone_garden_bifolds:
+        coordinates: 91,49,227,214,0,247,0,44
+      zone_garden_gate:
+        coordinates: 0,360,0,169,276,152,640,200,640,360
+  back:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-back.paparazzogo.svc.cluster.local
+          roles: *roles
+
+    zones:
+      zone_back_roof:
+        coordinates: 640,360,640,0,0,22,0,360
+        objects:
+          - person
+  side:
+    ffmpeg:
+      inputs:
+        - path: http://paparazzogo-side.paparazzogo.svc.cluster.local
+          roles: *roles
+    zones:
+      zone_side_back_gate:
+        coordinates: 296,360,640,360,640,193,562,162
+
+ui:
+  # Optional: Set the default live mode for cameras in the UI (default: shown below)
+  live_mode: mse
+  timezone: Europe/London
+  use_experimental: False
+  time_format: browser
+  date_style: short
+  time_style: medium
+  strftime_fmt: "%Y/%m/%d %H:%M"
+
+telemetry:
+  stats:
+    network_bandwidth: false
+  version_check: true
