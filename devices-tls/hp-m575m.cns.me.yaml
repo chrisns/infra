@@ -25,36 +25,55 @@ spec:
           dnsConfig:
             nameservers:
               - 192.168.0.1
+          initContainers:
+            - name: move-files
+              image: busybox
+              command: ["sh", "-c", "cp /test/* /dir"]
+              volumeMounts:
+                - name: emptydir
+                  mountPath: /dir
+                - name: robot-config
+                  subPath: HPRenewal.robot
+                  mountPath: /test/HPRenewal.robot
+                  readOnly: false
           containers:
             - name: hp-m575m
-              image: wbitt/network-multitool:latest
-              command: ["sh", "-c"]
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  ephemeral-storage: "1Gi"
+              # command: ["sleep", "1000000"]
+              image: marketsquare/robotframework-browser:18.4.0
+              command: ["/bin/bash", "-c"]
               args:
               - |
-                  openssl pkcs12 -export -out certificate.pfx -password pass:password -inkey /cert/tls.key -in /cert/tls.crt 
-                  curl 'https://hp-m575m.cns.me/hp/device/SignIn/Index' -v \
-                    -c ./cookies.txt \
-                    --form agentIdSelect=hp_EmbeddedPin_v1 \
-                    --form PinDropDown=AdminItem \
-                    --form PasswordTextBox=${HP_PASSWORD} \
-                    --form signInOk=Sign+In \
-                    --insecure
-                  curl -v -b ./cookies.txt --insecure \
-                    --form .Import_FileName_handle=@certificate.pfx \
-                    --form Finish=Finish \
-                    --form CSRFToken= \
-                    --form Hide=Hide \
-                    --form password=password \
-                    https://hp-m575m.cns.me/websecurity/cert_import.htm/config
+                  cd /test && \
+                  openssl pkcs12 -export -out certificate.pfx -password pass:password -inkey /cert/tls.key -in /cert/tls.crt && \
+                  robot HPRenewal.robot
               envFrom:
                 - secretRef:
                     name: secrets
               volumeMounts:
+                - name: emptydir
+                  mountPath: /test
                 - name: cert
                   mountPath: /cert
                   readOnly: true
+
           restartPolicy: OnFailure
           volumes:
+            - name: emptydir
+              emptyDir: {}
             - name: cert
               secret:
                 secretName: hp-m575m-https
+            - name: robot-config
+              configMap:
+                name: hp-m575m-robot
+          tolerations:
+            - key: think
+              operator: "Equal"
+              value: "true"
+              effect: "NoExecute"
+          nodeSelector:
+            kubernetes.io/hostname: think

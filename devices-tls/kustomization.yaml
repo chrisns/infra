@@ -5,6 +5,11 @@ resources:
   - namespace.yaml
   - hp-m575m.cns.me.yaml
 
+configMapGenerator:
+  - name: hp-m575m-robot
+    files:
+      - HPRenewal.robot
+
 secretGenerator:
   - name: secrets
     env: env.txt
