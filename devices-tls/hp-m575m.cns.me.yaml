@@ -16,7 +16,7 @@ kind: CronJob
 metadata:
   name: hp-m575m
 spec:
-  schedule: "35 3 * * *"
+  schedule: "35 3 1 * *"
   jobTemplate:
     spec:
       template:
