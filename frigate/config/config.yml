@@ -1,6 +1,6 @@
 mqtt:
   enabled: true
-  host: "{FRIGATE_MQTT_HOST}"
+  host: bbcd2e76e705454ab243493a9698c076.s1.eu.hivemq.cloud
   port: 8883
   user: "{FRIGATE_MQTT_USER}"
   password: "{FRIGATE_MQTT_PASSWORD}"
@@ -70,7 +70,6 @@ objects:
     - bus
     - car
     - horse
-    - backpack
 
 motion:
   threshold: 30
@@ -111,6 +110,9 @@ cameras:
           roles: &roles
             - detect
             - record
+    motion:
+      mask:
+        - 161,88,316,95,316,160,565,222,640,138,640,0,0,0,0,98
     zones:
       zone_driveway:
         coordinates: 640,360,640,131,160,77,0,99,0,360
@@ -120,6 +122,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-front.paparazzogo.svc.cluster.local
           roles: *roles
+    motion:
+      mask:
+        - 640,0,640,86,485,48,231,90,239,148,0,226,0,0
     zones:
       zone_front_porch:
         coordinates: 640,360,640,92,420,51,231,74,244,150,0,228,0,360
@@ -128,6 +133,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-porch.paparazzogo.svc.cluster.local
           roles: *roles
+    motion:
+      mask:
+        - 0,0,223,0,225,26,0,26
     zones:
       zone_porch_outside:
         coordinates: 79,378,227,256,252,61,0,165,0,211
@@ -139,7 +147,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-down.paparazzogo.svc.cluster.local
           roles: *roles
-
+    motion:
+      mask:
+        - 1920,0,1920,811,1084,178,857,0
     zones:
       zone_down_porch:
         coordinates: 829,767,528,944,194,333,458,225
@@ -152,7 +162,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-garden.paparazzogo.svc.cluster.local
           roles: *roles
-
+    motion:
+      mask:
+        - 640,0,640,136,306,108,112,90,26,23,27,0
     zones:
       zone_garden_bifolds:
         coordinates: 91,49,227,214,0,247,0,44
@@ -163,7 +175,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-back.paparazzogo.svc.cluster.local
           roles: *roles
-
+    motion:
+      mask:
+        - 0,0,350,0,359,105,202,142,0,168
     zones:
       zone_back_roof:
         coordinates: 640,360,640,0,0,22,0,360
@@ -174,6 +188,9 @@ cameras:
       inputs:
         - path: http://paparazzogo-side.paparazzogo.svc.cluster.local
           roles: *roles
+    motion:
+      mask:
+        - 640,193,640,0,0,0,0,133,313,76,344,93,451,81,611,135,598,174
     zones:
       zone_side_back_gate:
         coordinates: 296,360,640,360,640,193,562,162
