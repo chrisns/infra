@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: octoprint
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: octoprint.p.cns.me
+
+spec:
+  tls:
+    - hosts:
+        - octoprint.p.cns.me
+      secretName: octoprint-https
+
+  rules:
+    - host: octoprint.p.cns.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: octoprint
+                port:
+                  name: http

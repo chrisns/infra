@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octoprint
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: octoprint
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: octoprint
+    spec:
+      containers:
+        - name: octoprint
+          # args:
+          #   - /usr/bin/octoprint serve --port 80
+          image: octoprint/octoprint:1.10.2
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          # envFrom:
+          #   - secretRef:
+          #       name: secrets
+          env:
+            - name: OCTOPRINT_PORT
+              value: "80"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
+          #   failureThreshold: 4
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          #     scheme: HTTP
+          #   failureThreshold: 2
+          volumeMounts:
+            - mountPath: /octoprint/octoprint
+              name: pvc
+      volumes:
+        - name: pvc
+          persistentVolumeClaim:
+            claimName: octoprint
