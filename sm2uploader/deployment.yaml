@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sm2uploader
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sm2uploader
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sm2uploader
+    spec:
+      containers:
+        - name: sm2uploader
+          args:
+            - -octoprint
+            - 0.0.0.0:8888
+            - -knownhosts
+            - /hosts/hosts.yaml
+            - -host
+            - snapmaker.cns.me
+          image: ghcr.io/chrisns/sm2uploader:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HOST
+              value: snapmaker.cns.me
+          ports:
+            - name: http
+              containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /hosts
+            name: pvc
+      volumes:
+      - name: pvc
+        persistentVolumeClaim:
+          claimName: sm2uploader

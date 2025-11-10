@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sm2uploader
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: sm2uploader.p.cns.me
+
+spec:
+  tls:
+    - hosts:
+        - sm2uploader.p.cns.me
+      secretName: sm2uploader-https
+
+  rules:
+    - host: sm2uploader.p.cns.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sm2uploader
+                port:
+                  name: http
