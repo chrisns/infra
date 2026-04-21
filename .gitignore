@@ -1,5 +1,6 @@
 .gitsecret/keys/random_seed
 !*.secret
+bindetector/.venv/
 harmony/edb1b6efbe-private.pem.key
 harmony/config.json
 harmony/edb1b6efbe-certificate.pem.crt
