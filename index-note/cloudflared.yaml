@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflared
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cloudflared
+    spec:
+      terminationGracePeriodSeconds: 40
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2026.8.2 # Renovate bumps this
+          args:
+            - tunnel
+            - --config
+            - /etc/cloudflared/config/config.yaml
+            - run
+          ports:
+            - name: metrics
+              containerPort: 2000
+              protocol: TCP
+          securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: metrics
+          volumeMounts:
+          - mountPath: /etc/cloudflared/config
+            name: config
+            readOnly: true
+          - mountPath: /etc/cloudflared/creds
+            name: creds
+            readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: cloudflared-config
+      - name: creds
+        secret:
+          secretName: index-note
+          items:
+            - key: credentials.json
+              path: credentials.json

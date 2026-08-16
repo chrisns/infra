@@ -1,0 +1,9 @@
+tunnel: TUNNEL-UUID-REPLACE-ME # from `cloudflared tunnel create index-note`, SPEC.md section 12 step 1
+credentials-file: /etc/cloudflared/creds/credentials.json
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+ingress:
+  - hostname: index-note.cns.me
+    path: ^/note$
+    service: http://index-note:80
+  - service: http_status:404

@@ -47,3 +47,8 @@ ingress-nginx/le-cloudflare-secret.yaml
 /frigate/env.txt
 /zwave/zwavejs-base/env.txt
 /devices-tls/env.txt
+/govee2mqtt/.env
+/firecrawl/env.txt
+.firecrawl/
+/index-note/.env
+/index-note/credentials.json
