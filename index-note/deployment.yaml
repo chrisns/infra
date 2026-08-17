@@ -19,13 +19,20 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
         - name: index-note
-          image: ghcr.io/chrisns/index-cf-note-queue:1.1.3 # Renovate bumps this
+          image: ghcr.io/chrisns/index-cf-note-queue:1.2.1 # Renovate bumps this
           env:
             - name: INDEX_BEARER_TOKENS
               valueFrom:
                 secretKeyRef:
                   name: index-note
                   key: INDEX_BEARER_TOKENS
+            # Second factor. Identifies the ring hardware, so it is a secret and
+            # never appears in this repo. See SPEC.md section 6.2.1.
+            - name: INDEX_RING_PREFIXES
+              valueFrom:
+                secretKeyRef:
+                  name: index-note
+                  key: INDEX_RING_PREFIXES
             - name: VAULT_DIR
               value: /vault
             - name: TZ
