@@ -1,4 +1,4 @@
-tunnel: TUNNEL-UUID-REPLACE-ME # from `cloudflared tunnel create index-note`, SPEC.md section 12 step 1
+tunnel: 5e8865d6-2957-45d5-a968-7c3341f0d3fe # from `cloudflared tunnel create index-note`, SPEC.md section 12 step 1
 credentials-file: /etc/cloudflared/creds/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
