@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 180
       containers:
         - name: index-note
-          image: ghcr.io/chrisns/index-cf-note-queue:1.0.0 # the first CI build corrects this pin
+          image: ghcr.io/chrisns/index-cf-note-queue:1.1.2 # Renovate bumps this
           env:
             - name: INDEX_BEARER_TOKENS
               valueFrom:
