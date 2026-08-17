@@ -39,6 +39,10 @@ spec:
               value: Europe/London
             - name: LISTEN_ADDR
               value: ":8080"
+            # VOICE.md section 8: fire-and-forget poke after a note is
+            # durable. Same namespace, so the short Service name resolves.
+            - name: VOICE_SCORER_URL
+              value: "http://index-note-voice/score"
           ports:
             - name: http
               containerPort: 8080
